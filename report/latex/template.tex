@@ -1,0 +1,84 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[a4paper,top=2.4cm,bottom=2.4cm,left=2.3cm,right=2.3cm]{geometry}
+\usepackage{fontspec}
+\setmainfont{STIXGeneral}[Extension=.otf,UprightFont=*,BoldFont=*Bol,ItalicFont=*Italic,BoldItalicFont=*BolIta,Path=/System/Library/Fonts/Supplemental/]
+\setmonofont{Menlo}[Scale=0.84]
+\usepackage{unicode-math}
+\setmathfont{STIX Two Math}
+\usepackage[english,main=russian]{babel}
+\usepackage{newunicodechar}
+\newunicodechar{≤}{\ensuremath{\leq}}\newunicodechar{≥}{\ensuremath{\geq}}\newunicodechar{≈}{\ensuremath{\approx}}
+\newunicodechar{→}{\ensuremath{\rightarrow}}\newunicodechar{↑}{\ensuremath{\uparrow}}\newunicodechar{↓}{\ensuremath{\downarrow}}
+\newunicodechar{σ}{\ensuremath{\sigma}}\newunicodechar{λ}{\ensuremath{\lambda}}\newunicodechar{ρ}{\ensuremath{\rho}}\newunicodechar{ξ}{\ensuremath{\xi}}\newunicodechar{τ}{\ensuremath{\tau}}\newunicodechar{ω}{\ensuremath{\omega}}\newunicodechar{ζ}{\ensuremath{\zeta}}\newunicodechar{ε}{\ensuremath{\varepsilon}}
+\newunicodechar{×}{\ensuremath{\times}}\newunicodechar{−}{\ensuremath{-}}
+\usepackage{xcolor}
+\definecolor{ink}{HTML}{111111}
+\definecolor{accent}{HTML}{14602B}
+\definecolor{rule}{HTML}{9AA39D}
+\definecolor{boxbg}{HTML}{F2F4F2}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf,justification=centering,singlelinecheck=false,skip=6pt}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc}
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+\usepackage{footnotehyper}
+\makesavenoteenv{longtable}
+\newcounter{none}\def\LTcaptype{none}
+\setlength{\LTpre}{8pt}\setlength{\LTpost}{10pt}
+\renewcommand{\arraystretch}{1.18}
+\usepackage{enumitem}
+\setlist{nosep,leftmargin=1.6em,topsep=3pt}
+\setlist[enumerate]{label=\arabic*.}
+\usepackage{fancyvrb}
+\usepackage{fvextra}
+\DefineVerbatimEnvironment{verbatim}{Verbatim}{fontsize=\scriptsize,breaklines=true,breakanywhere=true,frame=single,framesep=3mm,rulecolor=\color{rule},formatcom=\color{ink}}
+\usepackage{titlesec}
+\titleformat{\section}{\Large\bfseries\color{ink}}{\thesection.}{0.6em}{}[{\color{rule}\titlerule}]
+\titleformat{name=\section,numberless}{\Large\bfseries\color{ink}}{}{0em}{}[{\color{rule}\titlerule}]
+\titleformat{\subsection}{\large\bfseries\color{ink}}{\thesubsection.}{0.6em}{}
+\titlespacing*{\section}{0pt}{2.2em}{0.9em}
+\titlespacing*{\subsection}{0pt}{1.5em}{0.5em}
+\usepackage{needspace}
+\pretocmd{\section}{\Needspace*{12\baselineskip}}{}{}
+\pretocmd{\subsection}{\Needspace*{5\baselineskip}}{}{}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\itshape Типы муниципальных экономик России}
+\fancyhead[R]{\small Ахрамешин А.\,С., Маркелов В.\,Л.}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\usepackage[hidelinks,unicode,pdftitle={Типы муниципальных экономик России: динамическая кластеризация на атрибутированной сети},pdfauthor={Ахрамешин А. С., Маркелов В. Л.}]{hyperref}
+\usepackage{xurl}
+\urlstyle{same}
+\providecommand{\tightlist}{\setlength{\itemsep}{1pt}\setlength{\parskip}{0pt}}
+\setlength{\parindent}{1.4em}\setlength{\parskip}{0pt}
+\linespread{1.07}
+\emergencystretch=2em
+\sloppy
+\newenvironment{absbox}{\par\begingroup\small\setlength{\parindent}{0pt}\leftskip=1.2em\rightskip=1.2em\ignorespaces}{\par\endgroup}
+\begin{document}
+\thispagestyle{plain}
+\begin{center}
+{\LARGE\bfseries\color{ink} $title$\par}
+\vspace{1.1em}
+{\large $authors$\par}
+\vspace{0.5em}
+{\small\itshape $venue$\par}
+\end{center}
+\vspace{0.8em}
+{\color{rule}\hrule}
+\vspace{0.9em}
+\begin{absbox}
+\textbf{Аннотация.} $abstract_ru$
+\end{absbox}
+\vspace{0.7em}
+{\color{rule}\hrule}
+\vspace{0.4em}
+$body$
+\end{document}

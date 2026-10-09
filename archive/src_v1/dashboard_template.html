@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Паспорт муниципалитета: типы, динамика, сеть сходства</title>
+<style>
+:root{--bg:#fff;--fg:#1d1d1b;--mut:#6b6b66;--card:#f6f6f3;--line:#dcdcd6}
+@media (prefers-color-scheme:dark){:root{--bg:#161615;--fg:#ececea;--mut:#a0a09a;--card:#222220;--line:#3a3a37}}
+body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.45 system-ui,sans-serif}
+header{padding:14px 16px 4px}h1{font-size:18px;margin:0 0 2px}header p{margin:0;color:var(--mut);max-width:980px}
+.wrap{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(300px,1fr);gap:12px;padding:8px 16px 16px}
+@media (max-width:900px){.wrap{grid-template-columns:1fr}}
+.card{background:var(--card);border-radius:10px;padding:10px 12px}
+.ctl{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:6px}
+.ctl label{color:var(--mut)}input[type=range]{flex:1;min-width:160px}select,input[type=search],button{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:3px 7px}
+.leg span{display:inline-flex;align-items:center;margin-right:12px;white-space:nowrap}.leg i{width:11px;height:11px;border-radius:2px;margin-right:5px;display:inline-block}
+#mapbox{position:relative}#map{width:100%;height:auto;background:var(--bg);border-radius:8px;display:block}#map path{stroke:var(--bg);stroke-width:.25;cursor:pointer}#map path.sel{stroke:var(--fg);stroke-width:1.6}#map line{stroke:var(--fg);stroke-width:1.4;opacity:.75;pointer-events:none}#map circle{fill:var(--fg);stroke:var(--bg);stroke-width:1;pointer-events:none}#tip{position:absolute;pointer-events:none;background:var(--fg);color:var(--bg);padding:3px 7px;border-radius:5px;font-size:12px;display:none;white-space:nowrap}
+h2{font-size:15px;margin:0 0 4px}.sub{color:var(--mut);margin:0 0 8px}
+#ribbon{display:flex;gap:2px;margin:6px 0 2px}#ribbon div{flex:1;height:18px;border-radius:2px}
+.ticks{display:flex;justify-content:space-between;color:var(--mut);font-size:11px}
+.row{display:grid;grid-template-columns:150px 1fr;align-items:center;gap:6px;margin:1px 0;font-size:12px}
+.bar{position:relative;height:10px;background:var(--bg);border-radius:3px}.bar b{position:absolute;top:0;height:10px;border-radius:3px}.bar u{position:absolute;top:-2px;width:2px;height:14px;background:var(--fg)}.bar s{position:absolute;left:50%;top:0;width:1px;height:10px;background:var(--mut)}
+#nbs div{padding:2px 0;cursor:pointer;border-bottom:1px solid var(--line)}#nbs div:hover{background:var(--bg)}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}.x{color:var(--mut)}
+</style></head><body>
+<header><h1>Паспорт муниципалитета</h1>
+<p>Карта типов экономики 2 190 МО по месяцам. Нажмите на МО: линии на карте покажут его ближайших соседей по сети сходства (это не географические соседи), справа появятся лента его типов за 22 месяца и профиль относительно типа.</p></header>
+<div class="wrap">
+ <div class="card">
+  <div class="ctl"><label>Уровень <select id="k"></select></label>
+   <label><input type="checkbox" id="chg"> только МО, менявшие тип</label>
+   <input type="search" id="q" list="names" placeholder="найти МО"><datalist id="names"></datalist></div>
+  <div class="ctl"><label id="mlab">Месяц</label><input type="range" id="m" min="0" value="0"><button id="play">▶</button></div>
+  <div class="leg" id="leg"></div>
+  <div id="mapbox"><svg id="map" viewBox="0 0 1000 600" role="img" aria-label="Карта типов МО"></svg><div id="tip"></div></div>
+ </div>
+ <div class="card" id="side"><h2>МО не выбрано</h2><p class="sub">Выберите МО на карте или найдите по названию.</p></div>
+</div>
+<script>
+const D=%%DATA%%;
+const $=id=>document.getElementById(id);let K=Object.keys(D.K)[0],t=D.months.length-1,sel=null,timer=null;
+const NS='http://www.w3.org/2000/svg',svg=$('map');svg.setAttribute('viewBox','0 0 '+D.W+' '+D.H);
+const P=D.paths.map((d,i)=>{const e=document.createElementNS(NS,'path');e.setAttribute('d',d);e.setAttribute('fill-rule','evenodd');e.dataset.i=i;svg.appendChild(e);return e});
+const ov=document.createElementNS(NS,'g');svg.appendChild(ov);
+svg.addEventListener('click',e=>{if(e.target.dataset&&e.target.dataset.i!==undefined)pick(+e.target.dataset.i)});
+svg.addEventListener('mousemove',e=>{const i=e.target.dataset&&e.target.dataset.i;const tp=$('tip');if(i===undefined){tp.style.display='none';return}
+ const k=D.K[K],r=$('mapbox').getBoundingClientRect();tp.innerHTML=D.name[i]+' · '+D.region[i]+'<br>'+k.names[k.L[t][i]];tp.style.display='block';tp.style.left=(e.clientX-r.left+12)+'px';tp.style.top=(e.clientY-r.top+12)+'px'});
+svg.addEventListener('mouseleave',()=>$('tip').style.display='none');
+function draw(){const k=D.K[K],n=k.names.length,chg=$('chg').checked;
+ P.forEach((e,i)=>e.setAttribute('fill',chg&&!k.changed[i]?D.grey:D.pal[k.L[t][i]]));
+ $('mlab').textContent='Месяц: '+D.months[t];$('m').value=t;
+ $('leg').innerHTML=k.names.map((nm,i)=>`<span><i style="background:${D.pal[i]}"></i>${nm} (${k.n[i]})</span>`).join('')+(chg?`<span><i style="background:${D.grey}"></i>тип не менялся</span>`:'');
+ if(sel!==null)panel()}
+function pick(i){if(sel!==null)P[sel].classList.remove('sel');sel=i;P[i].classList.add('sel');ov.innerHTML='';
+ D.nb[i].forEach(j=>{const l=document.createElementNS(NS,'line');l.setAttribute('x1',D.px[i]);l.setAttribute('y1',D.py[i]);l.setAttribute('x2',D.px[j]);l.setAttribute('y2',D.py[j]);ov.appendChild(l)});
+ [i].concat(D.nb[i]).forEach((j,s)=>{const c=document.createElementNS(NS,'circle');c.setAttribute('cx',D.px[j]);c.setAttribute('cy',D.py[j]);c.setAttribute('r',s?3:6);ov.appendChild(c)});
+ P[i].parentNode.appendChild(P[i]);svg.appendChild(ov);panel()}
+function panel(){const i=sel,k=D.K[K],n=k.names.length,ty=k.L[t][i],end=k.L[k.L.length-1][i];
+ const ch=new Set(k.L.map(r=>r[i])).size>1;
+ let h=`<h2>${D.name[i]}</h2><p class="sub">${D.region[i]}</p><div><span class="dot" style="background:${D.pal[ty]}"></span><b>${k.names[ty]}</b> в ${D.months[t]}</div>`;
+ h+=`<p class="sub">${ch?'За период МО меняло тип.':'За период МО тип не меняло.'}</p><div id="ribbon">`+D.months.map((m,s)=>`<div title="${m}: ${k.names[k.L[s][i]]}" style="background:${D.pal[k.L[s][i]]};${s==t?'outline:2px solid var(--fg)':''}"></div>`).join('')+`</div><div class="ticks"><span>${D.months[0]}</span><span>${D.months[D.months.length-1]}</span></div>`;
+ h+=`<h2 style="margin-top:12px">Профиль (σ от медианы всех МО)</h2><p class="sub">Полоса — это МО, чёрная метка — медиана его типа.</p>`;
+ D.feat.forEach((f,j)=>{const v=D.z[i][j],m=k.tmed[end][j],w=Math.abs(v)/3*50,l=v>=0?50:50-w;
+  h+=`<div class="row"><span>${f}</span><div class="bar"><s></s><b style="left:${l}%;width:${w}%;background:${D.pal[end]}"></b><u style="left:${50+m/3*50}%"></u></div></div>`});
+ h+=`<h2 style="margin-top:12px">Ближайшие по сети сходства</h2><p class="sub">Косинус профиля; соседи из других регионов показывают связи, которых нет на карте границ.</p><div id="nbs">`+
+  D.nb[i].map((j,s)=>`<div data-j="${j}"><span class="dot" style="background:${D.pal[k.L[t][j]]}"></span>${D.name[j]} <span class="x">· ${D.region[j]}${D.region[j]!==D.region[i]?'':' (тот же регион)'} · ${D.ns[i][s]}</span></div>`).join('')+`</div>`;
+ $('side').innerHTML=h;document.querySelectorAll('#nbs div').forEach(e=>e.onclick=()=>pick(+e.dataset.j))}
+Object.keys(D.K).forEach(x=>{const o=document.createElement('option');o.value=x;o.textContent='K='+x+(x==Object.keys(D.K)[0]?' (макро)':' (подробно)');$('k').appendChild(o)});
+$('names').innerHTML=D.name.map((a,i)=>`<option value="${a} · ${D.region[i]}">`).join('');
+$('m').max=D.months.length-1;$('m').value=t;
+$('k').onchange=e=>{K=e.target.value;draw()};$('chg').onchange=draw;$('m').oninput=e=>{t=+e.target.value;draw()};
+$('q').onchange=e=>{const i=D.name.findIndex((a,s)=>a+' · '+D.region[s]===e.target.value);if(i>=0)pick(i)};
+$('play').onclick=()=>{if(timer){clearInterval(timer);timer=null;$('play').textContent='▶';return}$('play').textContent='❚❚';t=0;draw();timer=setInterval(()=>{if(t>=D.months.length-1){clearInterval(timer);timer=null;$('play').textContent='▶';return}t++;draw()},450)};
+draw();
+</script></body></html>

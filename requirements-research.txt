@@ -1,0 +1,3 @@
+-r requirements-core.txt
+# The recorded release used torch 2.14.1+cpu. The core method does not require torch.
+torch>=2.5,<3

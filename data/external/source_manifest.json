@@ -1,0 +1,50 @@
+[
+  {
+    "code": "Y48109001",
+    "year": 2023,
+    "section": 9,
+    "url": "https://storage.yandexcloud.net/tochno-st-catalog/Rosstat/data_bdmo_118_v20250918/by_indicator/data_section9_112_v20250918.zip",
+    "file": "data/external/raw/Y48109001_2023.csv",
+    "sha256": "54d207f972c2058602fd318201d35fcff72f8c2a6c2676d3b78ad269933ca72f"
+  },
+  {
+    "code": "Y48060002",
+    "year": 2024,
+    "section": 60,
+    "url": "https://storage.yandexcloud.net/tochno-st-catalog/Rosstat/data_bdmo_118_v20250918/by_indicator/data_section60_112_v20250918.zip",
+    "file": "data/external/raw/Y48060002_2024.csv",
+    "sha256": "93b9cac46e65afe7d85792c5af99837b21f910d8708cd6cc57a8a72a4bc33d55"
+  },
+  {
+    "code": "Y48423005",
+    "year": 2023,
+    "section": 32,
+    "url": "https://storage.yandexcloud.net/tochno-st-catalog/Rosstat/data_bdmo_118_v20250918/by_indicator/data_section32_112_v20250918.zip",
+    "file": "data/external/raw/Y48423005_2023.csv",
+    "sha256": "e2cc8f029abd940fc301ea6f13e1c565fdd08803d626cc8e3836b3fe64858e42"
+  },
+  {
+    "code": "Y48010001",
+    "year": 2024,
+    "section": 37,
+    "url": "https://storage.yandexcloud.net/tochno-st-catalog/Rosstat/data_bdmo_118_v20250918/by_indicator/data_section37_112_v20250918.zip",
+    "file": "data/external/raw/Y48010001_2024.csv",
+    "sha256": "a372f3fc37679d5327b13807dd84835e262761fa68d5583bdd89b9e49192fffa"
+  },
+  {
+    "code": "Y48401003",
+    "year": 2024,
+    "section": 2,
+    "url": "https://storage.yandexcloud.net/tochno-st-catalog/Rosstat/data_bdmo_118_v20250918/by_indicator/data_section2_112_v20250918.zip",
+    "file": "data/external/raw/Y48401003_2024.csv",
+    "sha256": "b836d916a51859652a34f014732fbf76994350c1bf727fd88972dede87fd706d"
+  },
+  {
+    "code": "Y48401006",
+    "year": 2024,
+    "section": 2,
+    "url": "https://storage.yandexcloud.net/tochno-st-catalog/Rosstat/data_bdmo_118_v20250918/by_indicator/data_section2_112_v20250918.zip",
+    "file": "data/external/raw/Y48401006_2024.csv",
+    "sha256": "b3ab410c111161c18f005b10a7e30af90c9f6c73768785a30511bb82103deb64"
+  }
+]

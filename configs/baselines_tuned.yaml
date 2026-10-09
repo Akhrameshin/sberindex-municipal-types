@@ -1,0 +1,13 @@
+CANUS:
+  конфигурация: lr 1e-2, τ=2
+  lr: 0.01
+  epochs: 300.0
+  tau: 2.0
+  rho: 1.0
+  zeta: 1.0
+  rule: vanilla_filtered
+KEFRiN:
+  конфигурация: euclidean ρ=0.5 ξ=1
+  rho: 0.5
+  metric: euclidean
+  xi: 1.0

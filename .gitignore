@@ -1,0 +1,17 @@
+/.venv/
+__pycache__/
+*.pyc
+/external/
+/dist/
+/logs/
+.claude/
+nohup.out
+/data/raw/
+/data/external/raw/*.csv
+/data/external/raw/*.tmp
+/results/v2/*.log
+/results/v2/dashboard_payload.json
+# Prepared panel, external tables and compressed primary snapshots are tracked.
+.DS_Store
+.pytest_cache/
+!/results/v2/tests.log

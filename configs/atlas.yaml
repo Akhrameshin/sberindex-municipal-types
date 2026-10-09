@@ -1,0 +1,47 @@
+# Параметры основной воспроизводимой версии. Выбор параметров исследовательский: правило выбора K сформулировано по ходу анализа.
+version: 2
+seed: 42
+territories:
+  city_policy: aggregate
+  minimum_population_coverage: 0.99
+features:
+  window: 12
+  minimum_months: 24
+  clip_z: 4.0
+  spending_weight: 0.5
+  # Описатели, использующие весь двухлетний ряд, исключены из основной модели.
+graph:
+  neighbors: 15
+  minimum_neighbors: 3
+  metric: cosine
+  source: spending
+model:
+  smoothing_steps: 1
+  transition_penalty: 0.5
+  candidate_k: [3, 4, 5, 6]
+  displayed_k: [3, 4, 5]
+selection:
+  minimum_cluster_share: 0.03
+  minimum_mean_ari: 0.85
+  bootstrap_runs: 10
+robustness:
+  bootstrap_runs: 50
+  sample_fraction: 0.8
+  weight_grid: [0.25, 0.5, 0.75]
+  graph_neighbors: [8, 15, 30]
+  smoothing_grid: [0, 1, 2]
+  penalty_grid: [0, 0.5, 1.0]
+validation:
+  permutations: 499
+  cv_folds: 5
+  ridge_alpha: 10.0
+  confidence_boundary: 0.75
+assignment:
+  minimum_observed_months: 12
+  calibration_months: [6, 9, 12, 18]
+  calibration_objects: 200
+  # Перенос калибровки - согласие с полной моделью, а не вероятность истинного типа.
+presentation:
+  repository_url: https://github.com/Akhrameshin/sberindex-municipal-types
+  title: Атлас муниципальных экономик
+  authors: Ахрамешин А. С., Маркелов В. Л.
